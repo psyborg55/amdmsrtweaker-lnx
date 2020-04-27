@@ -1,3 +1,9 @@
+updated
+=======
+
+this fork contains changes that add additional APM related parameters as well as possibility to force CPU into boost states
+on FX-9830P disabling APM was not possible this way, smucfglock bit could not be cleared even though DS list it as rw, forcing boost states is possible by passing BoostForce=1 argument, however CPU needs to already be in one of the boost states otherwise it will freeze if it is in a state you are disabling. this gains some speed-up in compute scenarios as the cores don't downclock anymore below 3.5GHz
+
 amdmsrt
 =======
 
