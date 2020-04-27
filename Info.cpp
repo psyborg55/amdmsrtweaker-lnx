@@ -121,6 +121,12 @@ bool Info::Initialize() {
             MaxSoftwareMulti = (maxSoftwareMulti == 0 ? 63
                                 : maxSoftwareMulti);
         }
+      
+        eax = ReadPciConfig(AMD_CPU_DEVICE, 4, 0x16c);
+        TdpLimitDis = (GetBits(eax, 3, 1) == 1);
+        eax = ReadPciConfig(AMD_CPU_DEVICE, 2, 0x1b4);
+        SmuCfgLock = (GetBits(eax, 25, 1) == 1);
+      
     }
 
     return true;
@@ -299,6 +305,23 @@ void Info::SetAPM(bool enabled) const {
     WritePciConfig(AMD_CPU_DEVICE, 4, 0x15c, eax);
 }
 
+void Info::SetTDP(bool enabled) const {
+    if (Family != 0x15)
+        throw ExceptionWithMessage("TDP not supported");
+
+    uint32_t eax = ReadPciConfig(AMD_CPU_DEVICE, 4, 0x16c);
+    SetBits(eax, (enabled ? 1 : 0), 3, 1);
+    WritePciConfig(AMD_CPU_DEVICE, 4, 0x16c, eax);
+}
+
+void Info::SetSMU(bool enabled) const {
+    if (Family != 0x15)
+        throw ExceptionWithMessage("SMU not supported");
+
+    uint32_t eax = ReadPciConfig(AMD_CPU_DEVICE, 2, 0x1b4);
+    SetBits(eax, (enabled ? 1 : 0), 25, 1);
+    WritePciConfig(AMD_CPU_DEVICE, 2, 0x1b4, eax);
+}
 
 int Info::GetCurrentPState() const {
     const uint64_t msr = Rdmsr(0xc0010071);
