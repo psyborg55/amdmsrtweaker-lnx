@@ -71,6 +71,13 @@ void PrintInfo(const Info& info) {
     }
     cout << endl;
 
+    cout << ".:. APM" << endl << "---" << endl;
+        cout << "  " << (info.ApmMasterEn ? "enabled" : "disabled") << endl;
+        cout << "  " << (info.TdpLimitDis ? "TdpLimit disabled" : "TdpLimit enabled") << endl;
+        cout << "  " << (info.SmuCfgLock ? "SmuCfgLock enabled" : "SmuCfgLock disabled") << endl;
+        cout << "  PCI Reg " << std::hex << info.DumpReg << endl;
+    cout << endl;
+    
     cout << ".:. P-states" << endl << "---" << endl;
     cout << "  " << info.NumPStates << " of " << (info.Family == 0x10 ? 5 : 8) << " enabled (P0 .. P" << (info.NumPStates - 1) << ")" << endl;
 
