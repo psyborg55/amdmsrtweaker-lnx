@@ -65,6 +65,7 @@ void PrintInfo(const Info& info) {
     else {
         cout << "  " << (info.IsBoostEnabled ? "enabled" : "disabled") << endl;
         cout << "  " << (info.IsBoostLocked ? "locked" : "unlocked") << endl;
+        cout << "  " << (info.IsBoostForced ? "forced" : "not forced") << endl;
 
         if (info.MaxMulti != info.MaxSoftwareMulti)
             cout << "  Max multiplier: " << (info.MaxMulti / info.multiScaleFactor) << endl;
