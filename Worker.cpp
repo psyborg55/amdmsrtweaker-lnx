@@ -127,6 +127,22 @@ bool Worker::ParseParams(int argc, const char* argv[]) {
                     continue;
                 }
             }
+            
+            if (strcasecmp(key.c_str(), "TDP") == 0) {
+                const int flag = atoi(value.c_str());
+                if (flag == 0 || flag == 1) {
+                    _tdp = flag;
+                    continue;
+                }
+            }
+
+            if (strcasecmp(key.c_str(), "SMU") == 0) {
+                const int flag = atoi(value.c_str());
+                if (flag == 0 || flag == 1) {
+                    _smu = flag;
+                    continue;
+                }
+            }
         }
 
         cerr << "ERROR: invalid parameter " << param.c_str() << endl;
@@ -170,6 +186,10 @@ void Worker::ApplyChanges() {
         info.SetBoostSource(_turbo == 1);
     if (_apm >= 0 && info.Family == 0x15)
         info.SetAPM(_apm == 1);
+    if (_tdp >= 0 && info.Family == 0x15)
+        info.SetTDP(_tdp == 1);
+    if (_smu >= 0 && info.Family == 0x15)
+        info.SetSMU(_smu == 1);
 
     for (size_t i = 0; i < _pStates.size(); i++) {
         const PStateInfo& psi = _pStates[i];
