@@ -41,6 +41,7 @@ public:
     bool IsBoostSupported;
     bool IsBoostEnabled;
     bool IsBoostLocked;
+    bool IsBoostForced;
     bool ApmMasterEn;
     bool TdpLimitDis;
     bool SmuCfgLock;
@@ -61,6 +62,7 @@ public:
         , IsBoostSupported(false)
         , IsBoostEnabled(false)
         , IsBoostLocked(false)
+        , IsBoostForced(false)
         , ApmMasterEn(false)
         , TdpLimitDis(false)
         , SmuCfgLock(false)
@@ -80,6 +82,7 @@ public:
     void SetAPM(bool enabled) const;
     void SetTDP(bool enabled) const;
     void SetSMU(bool enabled) const;
+    void SetBoostForce(bool enabled) const;
 
     int GetCurrentPState() const;
     void SetCurrentPState(int index) const;
