@@ -108,6 +108,13 @@ bool Info::Initialize() {
                                         : (boostSrc == 1));
 
         IsBoostEnabled = (isBoostSrcEnabled && !cpbDis);
+      
+        eax = ReadPciConfig(AMD_CPU_DEVICE, 3, 0xa8);
+        const int PopDownPstate = GetBits(eax, 30, 2);
+        eax = ReadPciConfig(AMD_CPU_DEVICE, 3, 0xdc);
+        const int HwPstateMaxVal = GetBits(eax, 9, 2);
+
+        IsBoostForced = (!PopDownPstate && !HwPstateMaxVal);
 
         // max multi for software P-states (families 0x10 and 0x15)
         if (Family == 0x10) {
@@ -321,6 +328,20 @@ void Info::SetSMU(bool enabled) const {
     uint32_t eax = ReadPciConfig(AMD_CPU_DEVICE, 2, 0x1b4);
     SetBits(eax, (enabled ? 1 : 0), 25, 1);
     WritePciConfig(AMD_CPU_DEVICE, 2, 0x1b4, eax);
+}
+
+void Info::SetBoostForce(bool enabled) const {
+    if (Family != 0x15)
+        throw ExceptionWithMessage("SMU not supported");
+
+    uint32_t eax = ReadPciConfig(AMD_CPU_DEVICE, 3, 0xa8);
+    SetBits(eax, (enabled ? 0 : 1), 30, 1);
+    SetBits(eax, (enabled ? 0 : 1), 31, 1);
+    WritePciConfig(AMD_CPU_DEVICE, 3, 0xa8, eax);
+    eax = ReadPciConfig(AMD_CPU_DEVICE, 3, 0xdc);
+    SetBits(eax, (enabled ? 0 : 1), 9, 1);
+    SetBits(eax, (enabled ? 0 : 1), 10, 1);
+    WritePciConfig(AMD_CPU_DEVICE, 3, 0xdc, eax);
 }
 
 int Info::GetCurrentPState() const {
