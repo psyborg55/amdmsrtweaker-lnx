@@ -20,6 +20,7 @@ public:
         , _apm(-1)
         , _tdp(-1)
         , _smu(-1)
+        , _bst(-1)
         , _pState(-1)
     { }
 
@@ -37,5 +38,6 @@ private:
     int _apm;    // enable (1)/disable (0) APM
     int _tdp;    // enable (0)/disable (1) TDP Limit
     int _smu;    // enable (1)/disable (0) SMU Lock
+    int _bst;    // enable (1)/disable (0) Boost Force
     int _pState; // hardware index of the P-state to be activated
 };
