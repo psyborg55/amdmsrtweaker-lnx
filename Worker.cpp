@@ -143,6 +143,14 @@ bool Worker::ParseParams(int argc, const char* argv[]) {
                     continue;
                 }
             }
+            
+            if (strcasecmp(key.c_str(), "BoostForce") == 0) {
+                const int flag = atoi(value.c_str());
+                if (flag == 0 || flag == 1) {
+                    _bst = flag;
+                    continue;
+                }
+            }
         }
 
         cerr << "ERROR: invalid parameter " << param.c_str() << endl;
@@ -190,6 +198,8 @@ void Worker::ApplyChanges() {
         info.SetTDP(_tdp == 1);
     if (_smu >= 0 && info.Family == 0x15)
         info.SetSMU(_smu == 1);
+    if (_bst >= 0 && info.Family == 0x15)
+        info.SetBoostForce(_bst == 1);
 
     for (size_t i = 0; i < _pStates.size(); i++) {
         const PStateInfo& psi = _pStates[i];
