@@ -18,6 +18,8 @@ public:
         : _info(&info)
         , _turbo(-1)
         , _apm(-1)
+        , _tdp(-1)
+        , _smu(-1)
         , _pState(-1)
     { }
 
@@ -33,5 +35,7 @@ private:
     std::vector<NBPStateInfo> _nbPStates;
     int _turbo;  // enable (1)/disable (0) CPB
     int _apm;    // enable (1)/disable (0) APM
+    int _tdp;    // enable (0)/disable (1) TDP Limit
+    int _smu;    // enable (1)/disable (0) SMU Lock
     int _pState; // hardware index of the P-state to be activated
 };
